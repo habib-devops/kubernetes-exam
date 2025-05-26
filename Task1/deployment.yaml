@@ -1,1 +1,31 @@
 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task1-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpine-app
+  template:
+    metadata:
+      labels:
+        app: alpine-app
+    spec:
+      containers:
+        - name: alpine-container
+          image: alpine
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              while true; do
+                echo "Name is: $HABIB"
+                sleep 5
+              done
+          env:
+            - name: HABIB
+              valueFrom:
+                configMapKeyRef:
+                  name: habib-config-map
+                  key: name
